@@ -1,0 +1,17 @@
+.posts_block{
+    margin-left: 10px;
+}
+.btn{
+    display: block;
+    margin-bottom: 20px;
+}
+
+.redBorder{
+    border:red 2px solid;
+}
+
+.red{
+    color:red;
+    margin-bottom: 20px;
+}
+

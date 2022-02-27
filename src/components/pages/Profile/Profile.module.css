@@ -1,0 +1,7 @@
+img{
+    grid-area: i;
+
+}
+.content {
+    grid-area: c;
+}

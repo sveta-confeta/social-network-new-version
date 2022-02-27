@@ -1,0 +1,16 @@
+.header {
+    grid-area: h;
+    background-image: linear-gradient(to right, #383737 20%, #000);
+    padding-bottom: -20px;
+    display: flex;
+    align-items: center;
+
+}
+
+.logo {
+    padding: 10px;
+    display: block;
+}
+.text{
+    color: #fff;
+}
