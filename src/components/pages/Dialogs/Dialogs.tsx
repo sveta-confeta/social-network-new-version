@@ -2,6 +2,7 @@ import React from "react";
 import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
+import {AddTextareaMessage} from "../AddTextareaMessage";
 
 
 export type DialogItemType = {
@@ -19,12 +20,13 @@ export type MessageItemType = {
 export type DialogsPropsType = {
     dialogsItem:Array<DialogItemType>
     messagesItem:Array<MessageItemType>
+    addDialogMessage:(value:string)=>void
 
 }
 
 
 export const Dialogs = (props: DialogsPropsType) => {
-    debugger
+
 
     const DialogElement = props.dialogsItem.map(m => {
         return (
@@ -38,7 +40,9 @@ export const Dialogs = (props: DialogsPropsType) => {
         )
     })
 
-
+  const callback=(value:string)=>{
+      props.addDialogMessage(value)
+  }
 
     return (
         <div className={s.dialogs}>
@@ -48,6 +52,7 @@ export const Dialogs = (props: DialogsPropsType) => {
 
             <div className={s.messages}>     {/*message*/}
                 {MessagesElement}
+                <AddTextareaMessage callback={callback}/>
             </div>
 
 

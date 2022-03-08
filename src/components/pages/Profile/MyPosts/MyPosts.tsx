@@ -1,7 +1,8 @@
-import React, {ChangeEvent, useState,KeyboardEvent} from "react";
+import React  from "react";
 import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
 import {PostType} from "../Profile";
+import {AddTextareaMessage} from "../../AddTextareaMessage";
 
 
 type MyPostsPropsType = {
@@ -11,44 +12,19 @@ type MyPostsPropsType = {
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
-    let [value, setValue] = useState<string>('');
-
-    let [error,setError]=useState(false)
-
-    const onKeyPressHandler=(e:KeyboardEvent<HTMLTextAreaElement>)=>{
-        if(e.key==='Enter'){
-            onClickHandler();
-
-        }
-
-    }
-
-    const onClickHandler = () => {
-        if(value.trim()){
-            props.addPost(value);
-            setValue(' ')
-        }else{
-            setError(true)
-        }
-
-    }
-
-    const onchangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.currentTarget.value);
-        setError(false)
-    }
-
-
     const onClickClear=(id:string)=>{
         props.removePost(id)
+    }
+    const callback=(value:string)=>{
+        props.addPost(value)
     }
     return (
         <div>
             My posts:
             <div>
-                <textarea className={error ? s.redBorder:'' } onChange={onchangeHandler} value={value} onKeyPress={onKeyPressHandler}/>
-                <button onClick={onClickHandler}>Add post</button>
-                {error?<div className={s.red}>not corrected</div>: ""}
+                {/*текстэриа и кнопка по добавлению сообщений:*/}
+                <AddTextareaMessage  callback={callback}/>
+
             </div>
             <div className={s.posts}>
                 {props.profilePosts.map(m => {
