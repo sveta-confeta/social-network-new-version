@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {Header} from "./components/Header/Header";
 import {FriendItemType, Navbar} from "./components/Navbar/Navbar";
@@ -9,6 +9,7 @@ import {News} from "./components/pages/News/News";
 import {Music} from "./components/pages/Music/Music";
 import {Helping} from "./components/pages/Helping/Helping";
 import {v1} from "uuid";
+import {addDialogMessageAC, addPostAC, removePostAC, StateReducer} from "./reducer/stateReducer";
 
 export type StateType={
     profilePost:Array<PostType>
@@ -18,7 +19,7 @@ export type StateType={
 }
 
 function App() {
-    let[state,setState]=useState<StateType>({
+    let[state,dispatchState]=useReducer(StateReducer,{
         profilePost:[
         {id: v1(), message: 'Hi, how are you?', count: 20},
         {id: v1(), message: 'What are you doing on Saturday?', count: 3},
@@ -56,15 +57,18 @@ function App() {
         ],
 })
     const addPost=(value:string)=>{
-        let newPost= {id: v1(), message: value, count: 20};
-        setState({...state,profilePost:[...state.profilePost,newPost]});
+        // let newPost= {id: v1(), message: value, count: 20};
+        // setState({...state,profilePost:[...state.profilePost,newPost]});
+        dispatchState(addPostAC(value))
     }
     const removePost=(id:string)=>{
-        setState({...state,profilePost:state.profilePost.filter(f=> f.id!==id)});
+        // setState({...state,profilePost:state.profilePost.filter(f=> f.id!==id)});
+        dispatchState(removePostAC(id))
     }
     const addDialogMessage=(value:string)=>{
-        let newDialog={text: value, id: v1()};
-        setState({...state, messagesItem:[...state.messagesItem,newDialog]});
+        // let newDialog={text: value, id: v1()};
+        // setState({...state, messagesItem:[...state.messagesItem,newDialog]});
+        dispatchState(addDialogMessageAC(value));
     }
 
 
