@@ -3,6 +3,8 @@ import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
 import {PostType} from "../Profile";
 import {AddTextareaMessage} from "../../AddTextareaMessage";
+import {IconButton} from "@mui/material";
+import {Delete} from "@mui/icons-material";
 
 
 type MyPostsPropsType = {
@@ -12,9 +14,7 @@ type MyPostsPropsType = {
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
-    const onClickClear=(id:string)=>{
-        props.removePost(id)
-    }
+
     const callback=(value:string)=>{
         props.addPost(value)
     }
@@ -30,9 +30,10 @@ export const MyPosts = (props: MyPostsPropsType) => {
                 {props.profilePosts.map(m => {
                     return (
                         <div key={m.id} className={s.item}>
-                            <Post id={m.id} count={m.count} message={m.message}/>
-                            <button onClick={()=>onClickClear(m.id)}>x</button>
+                            <Post id={m.id} count={m.count} message={m.message}  removePost={ props.removePost}/>
+                            {/*<button onClick={()=>onClickClear(m.id)}>x</button>*/}
                             {/*//компонента с 1 постом*/}
+
                         </div>
                     )
                 })}

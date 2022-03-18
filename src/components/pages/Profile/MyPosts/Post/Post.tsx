@@ -1,13 +1,19 @@
 import s from "./Post.module.css";
 import React from "react";
+import {IconButton} from "@mui/material";
+import {Delete} from "@mui/icons-material";
 
 export type PostPropsType = {
     id: string
     count: number
     message: string
+    removePost:(id:string)=>void
 }
 
 export const Post = (props: PostPropsType) => {
+    const onClickClear=(id:string)=>{
+        props.removePost(id)
+    }
     return (
         <>
 
@@ -15,6 +21,11 @@ export const Post = (props: PostPropsType) => {
             {props.message}
             <div>
                 <span className={s.count}>{props.count}</span><span>like</span>
+                <IconButton
+                    onClick={()=>onClickClear(props.id)}
+                    aria-label="delete">
+                    <Delete />
+                </IconButton>
             </div>
         </>
     )
