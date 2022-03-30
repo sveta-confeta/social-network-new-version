@@ -2,7 +2,7 @@ import React from "react";
 import s from './Friend.module.css';
 
 export type FriendPropsType={
-    id:number
+    id:string
     name_friend:string
     img_friend:string
 }

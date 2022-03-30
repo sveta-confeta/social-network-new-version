@@ -1,8 +1,6 @@
 
 import {v1} from "uuid";
 import {PostType} from "../components/pages/Profile/Profile";
-import {Simulate} from "react-dom/test-utils";
-import stalled = Simulate.stalled;
 
 type ActionType= addPostACType|removePostACType;
 type addPostACType=ReturnType<typeof addPostAC>;

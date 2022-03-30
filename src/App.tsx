@@ -41,33 +41,15 @@ function App() {
 
     ]
 
-    const addPost = (value: string) => {
-        // let newPost= {id: v1(), message: value, count: 20};
-        // setState({...state,profilePost:[...state.profilePost,newPost]});
-        dispatchState(addPostAC(value))
-    }
-    const removePost = (id: string) => {
-        // setState({...state,profilePost:state.profilePost.filter(f=> f.id!==id)});
-        dispatchState(removePostAC(id))
-    }
-    const addDialogMessage = (value: string) => {
-        // let newDialog={text: value, id: v1()};
-        // setState({...state, messagesItem:[...state.messagesItem,newDialog]});
-        dispatchState(addDialogMessageAC(value));
-    }
-
-
     return (
         <div className="app-wrapper">
             <Header/>
-            <Navbar friendsData={state.friendsData}/>
+            <Navbar friendsData={friendsData}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/' element={<Profile profilePosts={state.profilePost} addPost={addPost}
-                                                      removePost={removePost}/>}/>
+                    <Route path='/' element={<Profile/>}/>
                     <Route path='/dialogs/*'
-                           element={<Dialogs dialogsItem={state.dialogsItem} messagesItem={state.messagesItem}
-                                             addDialogMessage={addDialogMessage}/>}/>
+                           element={<Dialogs />}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>

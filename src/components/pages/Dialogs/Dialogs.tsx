@@ -3,6 +3,9 @@ import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 import {AddTextareaMessage} from "../AddTextareaMessage";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../../redux/redux-store";
+import {addDialogMessageAC} from "../../../reducer/dialogReducer";
 
 
 export type DialogItemType = {
@@ -18,22 +21,23 @@ export type MessageItemType = {
 
 
 export type DialogsPropsType = {
-    dialogsItem:Array<DialogItemType>
-    messagesItem:Array<MessageItemType>
-    addDialogMessage:(value:string)=>void
 
 }
 
 
 export const Dialogs = (props: DialogsPropsType) => {
 
+    const dialogsItem=useSelector<AppRootStateType,Array<DialogItemType> >(state=>state.dialogsPage.dialogsItem)
+    const messagesItem=useSelector<AppRootStateType, Array<MessageItemType>>(state=>state.dialogsPage.messagesItem)
+    const dispatch=useDispatch();
 
-    const DialogElement = props.dialogsItem.map(m => {
+
+    const DialogElement = dialogsItem.map(m => {
         return (
             <DialogItem id={m.id} name={m.name}/>
         )
     });
-    const MessagesElement = props.messagesItem.map(m => {
+    const MessagesElement = messagesItem.map(m => {
         return (
 
             <Message text={m.text} id={m.id}/>
@@ -41,7 +45,7 @@ export const Dialogs = (props: DialogsPropsType) => {
     })
 
   const callback=(value:string)=>{
-      props.addDialogMessage(value)
+      dispatch(addDialogMessageAC(value))
   }
 
     return (

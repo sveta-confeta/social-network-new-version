@@ -12,14 +12,14 @@ type ActionType = followACType | unFollowACType  | setUsersACType;
 
 export type ContactsType = {
 
+
     id: string
-    fotoIcon:string
-    // photos: {
-    //     small: undefined|string,
-    //     large: undefined|string,
-    // }
+    photos: {
+        small: undefined|string,
+        large: undefined|string,
+    }
     followed: boolean
-    fullName: string
+    name: string
     status: string
     location: { city: string, coutntry: string }
 }

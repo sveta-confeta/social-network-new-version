@@ -2,7 +2,7 @@
 import {v1} from "uuid";
 import {DialogItemType, MessageItemType} from "../components/pages/Dialogs/Dialogs";
 
-type DialogsPage={
+type DialogsPageType={
     dialogsItem:Array<DialogItemType>
     messagesItem:Array<MessageItemType>
 }
@@ -23,7 +23,7 @@ const initialState={ dialogsItem: [
     {text: 'We are flying to Odessa tomorrow!', id: v1()},
 ]}
 
-export const dialogReducer=(state:DialogsPage=initialState,action:ActionType):DialogsPage=>{
+export const dialogReducer=(state:DialogsPageType=initialState,action:ActionType):DialogsPageType=>{
     switch (action.type){
 
         case "ADD-DIALOG-MESSAGE":{
@@ -31,6 +31,7 @@ export const dialogReducer=(state:DialogsPage=initialState,action:ActionType):Di
             return  {...state, messagesItem:[...state.messagesItem,newDialog]}
 
         }
+        default :return state
     }
 }
 

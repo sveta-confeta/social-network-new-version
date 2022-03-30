@@ -10,16 +10,14 @@ export type PostType = {
 }
 
 export type ProfilePropsType = {
-    profilePosts:Array<PostType>
-    addPost:(value:string)=>void
-    removePost:(id:string)=>void
+
 }
 
 export const Profile = (props: ProfilePropsType) => {
     return (
         <div className={s.content}>
             <ProfileInfo/>
-            <MyPosts profilePosts={props.profilePosts} addPost={props.addPost} removePost={props.removePost}/>
+            <MyPosts/>
         </div>
     )
 }

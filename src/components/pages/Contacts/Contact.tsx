@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {ContactsType, followAC, setUsersAC, unFollowAC} from "../../../reducer/contactReducer";
 import s from './Contact.module.css'
-import {v1} from "uuid";
+import axios from "axios";
+import userPfoto from './../../../images/User-PNG-Icon.png'
 
 export const Contact = () => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
@@ -16,41 +17,11 @@ export const Contact = () => {
     const followHandler=(userID:string)=>{
         dispatch(followAC(userID))
     }
-    if(contacts.length===0) {
-        dispatch(setUsersAC([
-            {
-                id: v1(),
-                fotoIcon: 'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
-                followed: true,
-                fullName: 'Dmitry',
-                status: 'I am boss',
-                location: {city: 'Tbilisi', coutntry: 'Gorgia'}
-            },
-            {
-                id: v1(),
-                fotoIcon: 'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
-                followed: true,
-                fullName: 'Sveta',
-                status: 'I am junior',
-                location: {city: 'Minsk', coutntry: 'Belarus'}
-            },
-            {
-                id: v1(),
-                fotoIcon: 'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
-                followed: true,
-                fullName: 'Olga',
-                status: 'I am fine',
-                location: {city: 'Varshava', coutntry: 'Polska'}
-            },
-            {
-                id: v1(),
-                fotoIcon: 'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
-                followed: false,
-                fullName: 'Natasha',
-                status: 'Shit happens',
-                location: {city: 'Moskow', coutntry: 'Rasha'}
-            }
-        ]))
+    if(contacts.length===0){  //если контактов нет на странице, тогда...
+        axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response=>{
+            debugger //дебагером можем увидеть то что приходит в response .данные в data.
+            dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
+        });
     }
 
     return  <div>

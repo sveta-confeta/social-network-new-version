@@ -2,17 +2,20 @@ import s from "./Post.module.css";
 import React from "react";
 import {IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {removePostAC} from "../../../../../reducer/postReducer";
+import {useDispatch} from "react-redux";
 
 export type PostPropsType = {
     id: string
     count: number
     message: string
-    removePost:(id:string)=>void
 }
 
 export const Post = (props: PostPropsType) => {
+    const dispatch=useDispatch();
+
     const onClickClear=(id:string)=>{
-        props.removePost(id)
+        dispatch(removePostAC(id))
     }
     return (
         <>

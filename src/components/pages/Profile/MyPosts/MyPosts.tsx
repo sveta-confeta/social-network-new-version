@@ -3,20 +3,21 @@ import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
 import {PostType} from "../Profile";
 import {AddTextareaMessage} from "../../AddTextareaMessage";
-import {IconButton} from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../../../redux/redux-store";
+import {addPostAC} from "../../../../reducer/postReducer";
 
 
 type MyPostsPropsType = {
-    profilePosts: Array<PostType>
-    addPost:(value:string)=>void
-    removePost:(id:string)=>void
 }
 
-export const MyPosts = (props: MyPostsPropsType) => {
+export const MyPosts = (props: MyPostsPropsType) =>{
+
+    const posts=useSelector<AppRootStateType, Array<PostType>>(state=>state.profilePage.posts)
+    const dispatch=useDispatch();
 
     const callback=(value:string)=>{
-        props.addPost(value)
+        dispatch(addPostAC(value));
     }
     return (
         <div>
@@ -27,10 +28,10 @@ export const MyPosts = (props: MyPostsPropsType) => {
 
             </div>
             <div className={s.posts}>
-                {props.profilePosts.map(m => {
+                {posts.map(m => {
                     return (
                         <div key={m.id} className={s.item}>
-                            <Post id={m.id} count={m.count} message={m.message}  removePost={ props.removePost}/>
+                            <Post id={m.id} count={m.count} message={m.message}/>
                             {/*<button onClick={()=>onClickClear(m.id)}>x</button>*/}
                             {/*//компонента с 1 постом*/}
 
