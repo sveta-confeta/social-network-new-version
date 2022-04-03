@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
@@ -20,12 +20,10 @@ export type MessageItemType = {
 
 
 
-export type DialogsPropsType = {
-
-}
 
 
-export const Dialogs = (props: DialogsPropsType) => {
+
+export const Dialogs =React.memo(  () => {
 
     const dialogsItem=useSelector<AppRootStateType,Array<DialogItemType> >(state=>state.dialogsPage.dialogsItem)
     const messagesItem=useSelector<AppRootStateType, Array<MessageItemType>>(state=>state.dialogsPage.messagesItem)
@@ -44,9 +42,9 @@ export const Dialogs = (props: DialogsPropsType) => {
         )
     })
 
-  const callback=(value:string)=>{
+  const callback= useCallback((value:string)=>{
       dispatch(addDialogMessageAC(value))
-  }
+  },[dispatch,addDialogMessageAC])
 
     return (
         <div className={s.dialogs}>
@@ -62,4 +60,4 @@ export const Dialogs = (props: DialogsPropsType) => {
 
         </div>
     )
-}
+});

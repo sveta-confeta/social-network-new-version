@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {ContactsType, followAC, setUsersAC, unFollowAC} from "../../../reducer/contactReducer";
@@ -6,17 +6,17 @@ import s from './Contact.module.css'
 import axios from "axios";
 import userPfoto from './../../../images/User-PNG-Icon.png'
 
-export const Contact = () => {
+export const Contact =React.memo( () => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
     const dispatch=useDispatch();
 
-    const unfollowHandler=(userID:string)=>{
+    const unfollowHandler=useCallback((userID:string)=>{
         dispatch(unFollowAC(userID))
-    }
+    },[ dispatch,unFollowAC]);
 
-    const followHandler=(userID:string)=>{
+    const followHandler=useCallback((userID:string)=>{
         dispatch(followAC(userID))
-    }
+    },[ dispatch,followAC])
     if(contacts.length===0){  //если контактов нет на странице, тогда...
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response=>{
             debugger //дебагером можем увидеть то что приходит в response .данные в data.
@@ -50,5 +50,5 @@ export const Contact = () => {
     </div>
 
 
-            };
+            });
 

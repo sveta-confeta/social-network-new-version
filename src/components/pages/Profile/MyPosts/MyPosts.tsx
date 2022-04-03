@@ -1,4 +1,4 @@
-import React  from "react";
+import React, {useCallback} from "react";
 import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
 import {PostType} from "../Profile";
@@ -8,17 +8,15 @@ import {AppRootStateType} from "../../../../redux/redux-store";
 import {addPostAC} from "../../../../reducer/postReducer";
 
 
-type MyPostsPropsType = {
-}
 
-export const MyPosts = (props: MyPostsPropsType) =>{
+export const MyPosts = React.memo(() =>{
 
     const posts=useSelector<AppRootStateType, Array<PostType>>(state=>state.profilePage.posts)
     const dispatch=useDispatch();
 
-    const callback=(value:string)=>{
+    const callback=useCallback((value:string)=>{
         dispatch(addPostAC(value));
-    }
+    },[dispatch,addPostAC]);
     return (
         <div>
             My posts:
@@ -42,5 +40,5 @@ export const MyPosts = (props: MyPostsPropsType) =>{
             </div>
         </div>
     )
-}
+});
 
