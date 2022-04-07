@@ -6,8 +6,10 @@ import {v1} from "uuid";
 type followACType = ReturnType<typeof followAC>;
 type unFollowACType = ReturnType<typeof unFollowAC>;
 type setUsersACType= ReturnType<typeof setUsersAC>
+type actualPageACType=ReturnType<typeof actualPageAC>
+type userTotalCountACType=ReturnType<typeof userTotalCountAC>
 
-type ActionType = followACType | unFollowACType  | setUsersACType;
+type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType | userTotalCountACType;
 
 
 export type ContactsType = {
@@ -25,7 +27,10 @@ export type ContactsType = {
 }
 
 export type ContactsStateType = {
-    contacts: Array<ContactsType>
+    contacts: Array<ContactsType>,
+    pageSize:number,
+    totalUserCount:number,
+    actualPage:number,
 }
 
 const initialState:ContactsStateType={
@@ -62,7 +67,11 @@ const initialState:ContactsStateType={
    //          status: 'Shit happens',
    //          location: {city: 'Moskow', coutntry: 'Rasha'}
    //      }
-    ]
+    ],
+    pageSize:5,
+    totalUserCount:40,
+    actualPage:1,
+
 
 }
 
@@ -75,7 +84,13 @@ export const contactsReducer=(state:ContactsStateType=initialState,action:Action
             return {...state,contacts:state.contacts.map(m=> m.id===action.userID  ?{...m,followed:false} : m)}//меняет с  true на false
         }
         case 'SET-USERS':{
-            return {...state,contacts: [...state.contacts, ...action.users]} //добавляем юзеров в пустой массив, добавляем к уже существующим(склеиваем два массива)
+            return {...state,contacts: action.users} //добавляем юзеров в пустой массив, добавляем к уже существующим(склеиваем два массива)
+        }
+        case  'ACTUAL-PAGE':{
+            return {...state,actualPage:action.page}
+        }
+        case 'USER-TOTAL-COUNT':{
+            return {...state,totalUserCount:action.page}
         }
         default:
             return  state;
@@ -100,5 +115,19 @@ export const setUsersAC = (users:Array<ContactsType>) => {
     return {
         type: 'SET-USERS',
         users,
+    } as const
+}
+//делаем страницы кликабельными:
+export const actualPageAC = (page:number) => {
+    return {
+        type: 'ACTUAL-PAGE',
+        page,
+    } as const
+}
+
+export const userTotalCountAC=(page:number) => {
+    return {
+        type: 'USER-TOTAL-COUNT',
+        page,
     } as const
 }

@@ -2,3 +2,17 @@
     width: 70px;
     height: 70px;
 }
+.page{
+    font-weight: bold;
+
+
+}
+.ul {
+   display: flex;
+
+}
+.ul li{
+    padding: 8px;
+    cursor: pointer;
+
+}
