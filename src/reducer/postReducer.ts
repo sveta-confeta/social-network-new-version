@@ -45,3 +45,11 @@ export const removePostAC=(id:string)=>{
     }as const
 }
 
+
+export const setProfileAC=(id:string)=>{
+    return{
+        type:'REMOVE-POST',
+        id,
+    }as const
+}
+

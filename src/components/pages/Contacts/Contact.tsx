@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {
-    actualPageAC,
+    actualPageAC, changeFetchingAC,
     ContactsType,
     followAC,
     setUsersAC,
@@ -12,12 +12,15 @@ import {
 import s from './Contact.module.css'
 import axios from "axios";
 import userPfoto from './../../../images/User-PNG-Icon.png'
+import {Preloader} from "../../../Util/Preloader";
+import {NavLink} from "react-router-dom";
 
 export const Contact =React.memo( () => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
     const pageSize=useSelector<AppRootStateType, number>(state => state.contactsPage.pageSize);
     const userTotalCount=useSelector<AppRootStateType, number>(state => state.contactsPage.totalUserCount);
     const actualPage=useSelector<AppRootStateType, number>(state => state.contactsPage.actualPage);
+    const isFetching=useSelector<AppRootStateType, boolean>(state => state.contactsPage.isFetching);
 
     const dispatch=useDispatch();
 
@@ -38,10 +41,16 @@ export const Contact =React.memo( () => {
 
     }
 
+    const changeFetching=(value:boolean)=>{
+        dispatch( changeFetchingAC(value));
+    }
+
     useEffect(()=>{
         // if(contacts.length===0){  //если контактов нет на странице, тогда...
+             changeFetching(true);//true-когда пошел запорос срабатывает крутилка
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${actualPage}&count=${pageSize}`).then(response=>{
-            debugger //дебагером можем увидеть то что приходит в response .данные в data.
+            changeFetching(false);//запрос пришел-крутилка отключилась
+            //debugger //дебагером можем увидеть то что приходит в response .данные в data.
             dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
             dispatch(userTotalCountAC(response.data.totalCount));
         });
@@ -60,11 +69,8 @@ export const Contact =React.memo( () => {
             });
         };
 
-
-
-
-
-    return  <div>
+       return  <div>
+           {isFetching ? <Preloader/> : null}
     <ul className={s.ul}>
         {/*как узнать какая страница true(s.pagе класс выделяет нажатую страницу): добавить в initialState значение текущей страницы: actualPage*/}
         {pages.map((m,i)=> <li key={i} onClick={()=>changeActualPage(m)} className={actualPage===m ? s.page : ''}>{m}</li>)}
@@ -73,7 +79,8 @@ export const Contact =React.memo( () => {
             contacts.map(m => <div className={s.bodyContacts} key={m.id}>
                     <div className={s.icon}>
                         {/*если фото пришло с сервера-не null-то его опубликуй. в инном случае опубликуй аватарку(userPhoto)*/}
-                        <img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> <br/>
+                        <NavLink to={'/profile/' + m.id}>
+                        <img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/></NavLink> <br/>
                         {m.followed ? <button onClick={()=>unfollowHandler(m.id)}>Unfolow</button>: <button onClick={()=>followHandler(m.id)}>Follow</button> }
                         {/*//если followed -тру, тогда пусть будет кнопка которая сменит его состояние на фалсе:*/}
                         {/*//  <button onClick={()=>unfollowHandler(m.id)}, в инном случае покажи кнопку followHandler(m.id)}*/}

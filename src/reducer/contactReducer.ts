@@ -8,8 +8,9 @@ type unFollowACType = ReturnType<typeof unFollowAC>;
 type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
 type userTotalCountACType=ReturnType<typeof userTotalCountAC>
+type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 
-type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType | userTotalCountACType;
+type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType | userTotalCountACType|changeFetchingACType;
 
 
 export type ContactsType = {
@@ -31,6 +32,7 @@ export type ContactsStateType = {
     pageSize:number,
     totalUserCount:number,
     actualPage:number,
+    isFetching:boolean,
 }
 
 const initialState:ContactsStateType={
@@ -71,6 +73,7 @@ const initialState:ContactsStateType={
     pageSize:5,
     totalUserCount:40,
     actualPage:1,
+    isFetching:false,
 
 
 }
@@ -91,6 +94,10 @@ export const contactsReducer=(state:ContactsStateType=initialState,action:Action
         }
         case 'USER-TOTAL-COUNT':{
             return {...state,totalUserCount:action.page}
+        }
+
+        case 'CHANGE-FETCHING':{
+            return {...state,isFetching:action.value}
         }
         default:
             return  state;
@@ -129,5 +136,12 @@ export const userTotalCountAC=(page:number) => {
     return {
         type: 'USER-TOTAL-COUNT',
         page,
+    } as const
+}
+
+export const changeFetchingAC=(value:boolean) => {
+    return {
+        type: 'CHANGE-FETCHING',
+        value,
     } as const
 }
