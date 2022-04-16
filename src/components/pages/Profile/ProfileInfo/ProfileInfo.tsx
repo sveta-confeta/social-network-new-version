@@ -20,7 +20,7 @@ const ProfileInfo = () => {
     }
 
     useEffect(()=>{
-        let userID = router.params.userID; //логический тупик
+        let userID = router.params.userID; //логический тупик???y
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
         axios.get(`https://social-network.samuraijs.com/api/1.0/profile/`  + userID ).then(response=>{
             debugger //дебагером можем увидеть то что приходит в response .данные в data.
