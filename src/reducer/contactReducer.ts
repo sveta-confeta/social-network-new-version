@@ -73,7 +73,7 @@ const initialState:ContactsStateType={
     pageSize:5,
     totalUserCount:40,
     actualPage:1,
-    isFetching:false,
+    isFetching:false, //крутилка
 
 
 }

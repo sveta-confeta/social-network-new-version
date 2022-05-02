@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import {Header} from "./components/Header/Header";
-import { Navbar} from "./components/Navbar/Navbar";
-import { Profile} from "./components/pages/Profile/Profile";
+import {Navbar} from "./components/Navbar/Navbar";
+import {Profile} from "./components/pages/Profile/Profile";
 import {Route, Routes} from "react-router-dom";
 import {Dialogs} from "./components/pages/Dialogs/Dialogs";
 import {News} from "./components/pages/News/News";
@@ -11,17 +11,17 @@ import {Helping} from "./components/pages/Helping/Helping";
 import {v1} from "uuid";
 import {Contact} from "./components/pages/Contacts/Contact";
 
-export type FriendItemType={
+export type FriendItemType = {
     id: string
     name_friend: string
-    img_friend:string
+    img_friend: string
 
 }
 
 
 function App() {
 
-    let friendsData:Array<FriendItemType>=[
+    let friendsData: Array<FriendItemType> = [
         {
             id: v1(),
             name_friend: 'Diogen Motogonych',
@@ -47,9 +47,12 @@ function App() {
             <Navbar friendsData={friendsData}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/profile/:id' element={<Profile/>}/>
+                    <Route path='/' element={<Profile/>}/>
+                    <Route path='/profile' element={<Profile/>}>
+                        <Route path=':userId' element={<Profile/>}/>
+                    </Route>
                     <Route path='/dialogs/*'
-                           element={<Dialogs />}/>
+                           element={<Dialogs/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>

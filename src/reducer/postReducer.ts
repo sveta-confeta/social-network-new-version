@@ -1,7 +1,7 @@
 
 import {v1} from "uuid";
 import {PostType} from "../components/pages/Profile/Profile";
-import {ContactsType} from "./contactReducer";
+
 
 type ActionType= addPostACType|removePostACType| setProfileACType;
 type addPostACType=ReturnType<typeof addPostAC>;
@@ -40,7 +40,7 @@ const initialState={
     {id: v1(), message: 'Hi, how are you?', count: 20},
     {id: v1(), message: 'What are you doing on Saturday?', count: 3},
     {id: v1(), message: 'By-by', count: 6},],
-     users:null,
+    users:null,
 }
 
 export const postReducer=(state:PostsType=initialState, action:ActionType):PostsType=>{

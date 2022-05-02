@@ -1,38 +1,20 @@
-import React, {useEffect} from "react";
+import React from "react";
 import s from './ProfileInfo.module.css';
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {AppRootStateType} from "../../../../redux/redux-store";
-import {ProfileUserType, setProfileAC} from "../../../../reducer/postReducer";
-import {changeFetchingAC} from "../../../../reducer/contactReducer";
-import axios from "axios";
+import {ProfileUserType, } from "../../../../reducer/postReducer";
+
+
 import logo from './../../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../../Util/Preloader";
 
 
 const ProfileInfo = () => {
-    const dispatch=useDispatch();
-    const isFetching=useSelector<AppRootStateType, boolean>(state => state.contactsPage.isFetching); //???
+    // let isFetching = useSelector<AppRootStateType, boolean>(state => state.contactsPage.isFetching);
     const users=useSelector<AppRootStateType,ProfileUserType | null>(state => state.profilePage.users);
 
-    const changeFetching=(value:boolean)=>{
-        dispatch( changeFetchingAC(value));
-
-    }
-
-    useEffect(()=>{
-        let userID = router.params.userID; //логический тупик???y
-        changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/`  + userID ).then(response=>{
-            debugger //дебагером можем увидеть то что приходит в response .данные в data.
-            changeFetching(false);//запрос пришел-крутилка отключилась
-
-            dispatch(setProfileAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
-        });
-        // }
-    },[]);
-
     if (!users) {
-        return <Preloader/>  //если нет профайла то крутилка
+        return <Preloader/>  //если нет профайла то крутилка ПРОВЕРКА на NULL
     }//потом разметка ниже
     return (
 
