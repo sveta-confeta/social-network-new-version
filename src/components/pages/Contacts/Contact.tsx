@@ -25,12 +25,23 @@ export const Contact = React.memo(() => {
     const dispatch = useDispatch();
 
     const unfollowHandler = useCallback((userID: string) => {
-        dispatch(unFollowAC(userID))
+        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
+            debugger
+            if(response.data.resultCode===0){
+                dispatch(unFollowAC(userID));
+            }
+        })
+
     }, [dispatch, unFollowAC]);
 
     const followHandler = useCallback((userID: string) => {
-        dispatch(followAC(userID))
-    }, [dispatch, followAC])
+        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{},{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
+            debugger
+            if(response.data.resultCode===0){
+                dispatch(followAC(userID))
+            }
+        })
+    }, [dispatch, followAC]);
 
     let pagesCount = Math.ceil(userTotalCount / pageSize); //считаем количество страниц .делим всех юзеров на колич.юзеров на своей странице
     let pages = [];
@@ -48,20 +59,19 @@ export const Contact = React.memo(() => {
     useEffect(() => {
         // if(contacts.length===0){  //если контактов нет на странице, тогда...
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${actualPage}&count=${pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${actualPage}&count=${pageSize}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
             changeFetching(false);//запрос пришел-крутилка отключилась
             //debugger //дебагером можем увидеть то что приходит в response .данные в data.
             dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
             dispatch(userTotalCountAC(response.data.totalCount));
         });
-        // }
     }, []);
 
 
     const changeActualPage = (page: number) => {
         dispatch(actualPageAC(page));
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${pageSize}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
             changeFetching(false);//запрос пришел-крутилка отключилась
             //debugger //дебагером можем увидеть то что приходит в response .данные в data.
             dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
