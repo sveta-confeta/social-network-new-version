@@ -14,6 +14,7 @@ import axios from "axios";
 import userPfoto from './../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
 import {NavLink} from "react-router-dom";
+import {followApi, getApiUsers, onPageChange, unfollowApi} from "../../../api/api";
 
 export const Contact = React.memo(() => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
@@ -25,9 +26,8 @@ export const Contact = React.memo(() => {
     const dispatch = useDispatch();
 
     const unfollowHandler = useCallback((userID: string) => {
-        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
-            debugger
-            if(response.data.resultCode===0){
+        unfollowApi(userID).then(data => { //delete запрс
+            if(data.resultCode===0){
                 dispatch(unFollowAC(userID));
             }
         })
@@ -35,8 +35,7 @@ export const Contact = React.memo(() => {
     }, [dispatch, unFollowAC]);
 
     const followHandler = useCallback((userID: string) => {
-        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{},{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
-            debugger
+        followApi(userID).then(response => {// пост запрос
             if(response.data.resultCode===0){
                 dispatch(followAC(userID))
             }
@@ -59,11 +58,11 @@ export const Contact = React.memo(() => {
     useEffect(() => {
         // if(contacts.length===0){  //если контактов нет на странице, тогда...
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${actualPage}&count=${pageSize}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
+        getApiUsers(actualPage, pageSize).then(data=> { //get запрос
             changeFetching(false);//запрос пришел-крутилка отключилась
             //debugger //дебагером можем увидеть то что приходит в response .данные в data.
-            dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
-            dispatch(userTotalCountAC(response.data.totalCount));
+            dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
+            dispatch(userTotalCountAC(data.totalCount));
         });
     }, []);
 
@@ -71,10 +70,10 @@ export const Contact = React.memo(() => {
     const changeActualPage = (page: number) => {
         dispatch(actualPageAC(page));
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${pageSize}`,{withCredentials:true,headers:{'API-KEY':'06ccb261-83c8-42d1-935e-fdc7e7fd8b48'}}).then(response => {
+        onPageChange(page,pageSize).then(data => { //гет запрос
             changeFetching(false);//запрос пришел-крутилка отключилась
             //debugger //дебагером можем увидеть то что приходит в response .данные в data.
-            dispatch(setUsersAC(response.data.items)); //этот путь к обьекту с данными мы увидели через дебагер
+            dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
         });
     };
 
