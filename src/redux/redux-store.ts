@@ -2,12 +2,14 @@ import {combineReducers, createStore} from "redux";
 import {dialogReducer} from "../reducer/dialogReducer";
 import {postReducer} from "../reducer/postReducer";
 import {contactsReducer} from "../reducer/contactReducer";
+import {authReducer} from "../reducer/authReducer";
 
 
 let rootReducer=combineReducers({//сюда поместим все редьюсеры
     profilePage:postReducer,
     dialogsPage:dialogReducer,
     contactsPage:contactsReducer,
+    auth:authReducer,
 });
 
 // определить автоматически тип всего объекта состояния

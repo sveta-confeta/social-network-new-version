@@ -1,9 +1,11 @@
 .header {
     grid-area: h;
     background-image: linear-gradient(to right, #383737 20%, #000);
+    padding: 0 20px;
     padding-bottom: -20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
 }
 
@@ -13,4 +15,19 @@
 }
 .text{
     color: #fff;
+}
+.logoWrapper{
+    display: flex;
+    align-items: center;
+}
+a.login{
+    color: white;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.loginName{
+    color: white;
 }
