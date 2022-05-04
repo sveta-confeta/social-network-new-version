@@ -10,11 +10,11 @@ import {
     userTotalCountAC
 } from "../../../reducer/contactReducer";
 import s from './Contact.module.css'
-import axios from "axios";
 import userPfoto from './../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
 import {NavLink} from "react-router-dom";
 import {followApi, getApiUsers, onPageChange, unfollowApi} from "../../../api/api";
+import {followButtonActionAC, followButtonActionFalseAC} from "../../../reducer/authReducer";
 
 export const Contact = React.memo(() => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
@@ -22,23 +22,28 @@ export const Contact = React.memo(() => {
     const userTotalCount = useSelector<AppRootStateType, number>(state => state.contactsPage.totalUserCount);
     const actualPage = useSelector<AppRootStateType, number>(state => state.contactsPage.actualPage);
     const isFetching = useSelector<AppRootStateType, boolean>(state => state.contactsPage.isFetching);
+    const followButtonAction=useSelector<AppRootStateType,string[] >(state => state.auth.followButtonAction)
 
     const dispatch = useDispatch();
 
     const unfollowHandler = useCallback((userID: string) => {
+        dispatch(followButtonActionAC(userID)) //устанавливаем на кнопку disabled
         unfollowApi(userID).then(data => { //delete запрс
             if(data.resultCode===0){
                 dispatch(unFollowAC(userID));
             }
+            dispatch(followButtonActionFalseAC(userID)) //убираем disabled c кнопки по id
         })
 
     }, [dispatch, unFollowAC]);
 
     const followHandler = useCallback((userID: string) => {
-        followApi(userID).then(response => {// пост запрос
-            if(response.data.resultCode===0){
+        dispatch(followButtonActionAC(userID)) //устанавливаем на кнопку disabled
+        followApi(userID).then(data => {// пост запрос
+            if(data.resultCode===0){
                 dispatch(followAC(userID))
             }
+            dispatch(followButtonActionFalseAC(userID)) //убираем disabled c кнопки по id
         })
     }, [dispatch, followAC]);
 
@@ -91,8 +96,12 @@ export const Contact = React.memo(() => {
                         <NavLink to={'/profile/' + m.id}>
                             <img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/></NavLink>
                         <br/>
-                        {m.followed ? <button onClick={() => unfollowHandler(m.id)}>Unfolow</button> :
-                            <button onClick={() => followHandler(m.id)}>Follow</button>}
+
+                        {m.followed ?
+                            <button disabled={followButtonAction.includes(m.id)} onClick={() =>{
+                                unfollowHandler(m.id)}}>Unfolow</button> :
+                            <button disabled={followButtonAction.includes(m.id)} onClick={() => followHandler(m.id)}>Follow</button>}
+
                         {/*//если followed -тру, тогда пусть будет кнопка которая сменит его состояние на фалсе:*/}
                         {/*//  <button onClick={()=>unfollowHandler(m.id)}, в инном случае покажи кнопку followHandler(m.id)}*/}
                     </div>

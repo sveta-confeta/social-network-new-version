@@ -17,9 +17,9 @@ export const Header = () => {
     useEffect(() => {
         changeFetching(true);//true-когда пошел запорос срабатывает крутилка
         axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`,{withCredentials:true}).then(response => {
-            debugger
+
             changeFetching(false);//запрос пришел-крутилка отключилась
-            debugger //дебагером можем увидеть то что приходит в response .данные в data.
+           // debugger //дебагером можем увидеть то что приходит в response .данные в data.
           if(response.data.resultCode===0){
               let{id,login,email}=response.data.data //деструктуризация
               dispatch(setUserDataAC(id,login,email))
