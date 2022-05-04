@@ -14,7 +14,10 @@ import userPfoto from './../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
 import {NavLink} from "react-router-dom";
 import {followApi, getApiUsers, onPageChange, unfollowApi} from "../../../api/api";
-import {followButtonActionAC, followButtonActionFalseAC} from "../../../reducer/authReducer";
+import {
+    followButtonFalseDisabledAC,
+    followButtonTrueDisabledAC
+} from "../../../reducer/authReducer";
 
 export const Contact = React.memo(() => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
@@ -27,23 +30,23 @@ export const Contact = React.memo(() => {
     const dispatch = useDispatch();
 
     const unfollowHandler = useCallback((userID: string) => {
-        dispatch(followButtonActionAC(userID)) //устанавливаем на кнопку disabled
+        dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
         unfollowApi(userID).then(data => { //delete запрс
             if(data.resultCode===0){
                 dispatch(unFollowAC(userID));
             }
-            dispatch(followButtonActionFalseAC(userID)) //убираем disabled c кнопки по id
+            dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
         })
 
     }, [dispatch, unFollowAC]);
 
     const followHandler = useCallback((userID: string) => {
-        dispatch(followButtonActionAC(userID)) //устанавливаем на кнопку disabled
+        dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
         followApi(userID).then(data => {// пост запрос
             if(data.resultCode===0){
                 dispatch(followAC(userID))
             }
-            dispatch(followButtonActionFalseAC(userID)) //убираем disabled c кнопки по id
+            dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
         })
     }, [dispatch, followAC]);
 
@@ -99,7 +102,7 @@ export const Contact = React.memo(() => {
 
                         {m.followed ?
                             <button disabled={followButtonAction.includes(m.id)} onClick={() =>{
-                                unfollowHandler(m.id)}}>Unfolow</button> :
+                                unfollowHandler(m.id)}}>Unfollow</button> :
                             <button disabled={followButtonAction.includes(m.id)} onClick={() => followHandler(m.id)}>Follow</button>}
 
                         {/*//если followed -тру, тогда пусть будет кнопка которая сменит его состояние на фалсе:*/}

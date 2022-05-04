@@ -23,12 +23,12 @@ type AuthType = {
 
 
 
-type ActionType = setUserDataACType | changeFetchingACType|followButtonActionACType | followButtonActionFalseACType;
+type ActionType = setUserDataACType | changeFetchingACType|followButtonFalseDisabledACType | followButtonTrueDisabledACType;
 
 type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType = ReturnType<typeof changeFetchingAC>
-type followButtonActionACType=ReturnType<typeof followButtonActionAC>
-type followButtonActionFalseACType=ReturnType<typeof followButtonActionFalseAC>
+type followButtonTrueDisabledACType=ReturnType<typeof followButtonTrueDisabledAC>
+type followButtonFalseDisabledACType=ReturnType<typeof followButtonFalseDisabledAC>
 
 
 export const authReducer = (state: AuthType = initialState, action: ActionType): AuthType => {
@@ -62,14 +62,14 @@ export const setUserDataAC = (id: number,
         },
     } as const
 }
-export const followButtonActionAC = (userID:string) => {
+export const followButtonTrueDisabledAC = (userID:string) => {
     return {
         type: 'FOLLOW-BUTTON-ACTION-PENDING',
         userID
     } as const
 }
 
-export const followButtonActionFalseAC = (userID:string) => {
+export const followButtonFalseDisabledAC = (userID:string) => {
     return {
         type: 'FOLLOW-BUTTON-ACTION-FALSE',
         userID
