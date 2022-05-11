@@ -4,7 +4,7 @@ import {AppRootStateType} from "../../../redux/redux-store";
 import {
     actualPageAC, changeFetchingAC,
     ContactsType,
-    followAC, getUsersThunkCreator,
+    followAC, getUsersThunkCreator, onPageChangeThunkCreator,
     setUsersAC,
     unFollowAC,
     userTotalCountAC
@@ -63,22 +63,9 @@ export const Contact = React.memo(() => {
         }
 
     }
-
-    const changeFetching = (value: boolean) => {
-        dispatch(changeFetchingAC(value)); //крутилка
-    }
-
-
-
-
     const changeActualPage = (page: number) => {
-        dispatch(actualPageAC(page));
-        changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        onPageChange(page,pageSize).then(data => { //гет запрос
-            changeFetching(false);//запрос пришел-крутилка отключилась
-            //debugger //дебагером можем увидеть то что приходит в response .данные в data.
-            dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
-        });
+        dispatch(onPageChangeThunkCreator(page, pageSize)); // get запрос юзеров на страницу
+
     };
 
     return <div>

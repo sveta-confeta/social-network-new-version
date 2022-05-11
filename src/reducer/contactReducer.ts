@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {getApiUsers} from "../api/api";
+import {getApiUsers, onPageChange} from "../api/api";
 
 
 type followACType = ReturnType<typeof followAC>;
@@ -152,6 +152,16 @@ export const getUsersThunkCreator=(actualPage: number, pageSize: number)=>(dispa
         //debugger //дебагером можем увидеть то что приходит в response .данные в data.
         dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
         dispatch(userTotalCountAC(data.totalCount));
+    });
+
+}
+export const onPageChangeThunkCreator=(page: number, pageSize: number)=>(dispatch:Dispatch)=>{
+    dispatch(actualPageAC(page));
+    dispatch( changeFetchingAC(true));//true-когда пошел запорос срабатывает крутилка
+    onPageChange(page,pageSize).then(data=> { //get запрос
+        dispatch(changeFetchingAC(false));//запрос пришел-крутилка отключилась
+        dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
+
     });
 
 }
