@@ -1,6 +1,5 @@
-
-import {v1} from "uuid";
-
+import {Dispatch} from "redux";
+import {getApiUsers} from "../api/api";
 
 
 type followACType = ReturnType<typeof followAC>;
@@ -14,8 +13,6 @@ type ActionType = followACType | unFollowACType  | setUsersACType | actualPageAC
 
 
 export type ContactsType = {
-
-
     id: string
     photos: {
         small: undefined|string,
@@ -144,4 +141,17 @@ export const changeFetchingAC=(value:boolean) => {
         type: 'CHANGE-FETCHING',
         value,
     } as const
+}
+
+//Thunk-creator:
+
+export const getUsersThunkCreator=(actualPage: number, pageSize: number)=>(dispatch:Dispatch)=>{
+    dispatch( changeFetchingAC(true));//true-когда пошел запорос срабатывает крутилка
+    getApiUsers(actualPage, pageSize).then(data=> { //get запрос
+        dispatch(changeFetchingAC(false));//запрос пришел-крутилка отключилась
+        //debugger //дебагером можем увидеть то что приходит в response .данные в data.
+        dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
+        dispatch(userTotalCountAC(data.totalCount));
+    });
+
 }

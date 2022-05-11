@@ -4,7 +4,7 @@ import {AppRootStateType} from "../../../redux/redux-store";
 import {
     actualPageAC, changeFetchingAC,
     ContactsType,
-    followAC,
+    followAC, getUsersThunkCreator,
     setUsersAC,
     unFollowAC,
     userTotalCountAC
@@ -28,6 +28,11 @@ export const Contact = React.memo(() => {
     const followButtonAction=useSelector<AppRootStateType,string[] >(state => state.auth.followButtonAction)
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        // if(contacts.length===0){  //если контактов нет на странице, тогда...
+        dispatch(getUsersThunkCreator(actualPage, pageSize)); //get запрос юзеров
+    }, []);
 
     const unfollowHandler = useCallback((userID: string) => {
         dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
@@ -63,16 +68,7 @@ export const Contact = React.memo(() => {
         dispatch(changeFetchingAC(value)); //крутилка
     }
 
-    useEffect(() => {
-        // if(contacts.length===0){  //если контактов нет на странице, тогда...
-        changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        getApiUsers(actualPage, pageSize).then(data=> { //get запрос
-            changeFetching(false);//запрос пришел-крутилка отключилась
-            //debugger //дебагером можем увидеть то что приходит в response .данные в data.
-            dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
-            dispatch(userTotalCountAC(data.totalCount));
-        });
-    }, []);
+
 
 
     const changeActualPage = (page: number) => {
