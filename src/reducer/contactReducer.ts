@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
-import {getApiUsers, onPageChange} from "../api/api";
+import {followApi, getApiUsers, onPageChange, unfollowApi} from "../api/api";
+import {followButtonFalseDisabledAC, followButtonTrueDisabledAC} from "./authReducer";
 
 
 type followACType = ReturnType<typeof followAC>;
@@ -153,7 +154,6 @@ export const getUsersThunkCreator=(actualPage: number, pageSize: number)=>(dispa
         dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
         dispatch(userTotalCountAC(data.totalCount));
     });
-
 }
 export const onPageChangeThunkCreator=(page: number, pageSize: number)=>(dispatch:Dispatch)=>{
     dispatch(actualPageAC(page));
@@ -163,5 +163,24 @@ export const onPageChangeThunkCreator=(page: number, pageSize: number)=>(dispatc
         dispatch(setUsersAC(data.items)); //этот путь к обьекту с данными мы увидели через дебагер
 
     });
+}
 
+export const unfollowHandlerThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
+    dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
+    unfollowApi(userID).then(data=> { //get запрос
+        if(data.resultCode===0){
+            dispatch(unFollowAC(userID));
+        }
+        dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
+    })
+}
+
+export const followHandlerThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
+    dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
+    followApi(userID).then(data=> { //get запрос
+        if(data.resultCode===0){
+            dispatch(followAC(userID));
+        }
+        dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
+    })
 }

@@ -4,9 +4,9 @@ import {AppRootStateType} from "../../../redux/redux-store";
 import {
     actualPageAC, changeFetchingAC,
     ContactsType,
-    followAC, getUsersThunkCreator, onPageChangeThunkCreator,
+    followAC, followHandlerThunkCreator, getUsersThunkCreator, onPageChangeThunkCreator,
     setUsersAC,
-    unFollowAC,
+    unFollowAC, unfollowHandlerThunkCreator,
     userTotalCountAC
 } from "../../../reducer/contactReducer";
 import s from './Contact.module.css'
@@ -35,24 +35,12 @@ export const Contact = React.memo(() => {
     }, []);
 
     const unfollowHandler = useCallback((userID: string) => {
-        dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
-        unfollowApi(userID).then(data => { //delete запрс
-            if(data.resultCode===0){
-                dispatch(unFollowAC(userID));
-            }
-            dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
-        })
+        dispatch(unfollowHandlerThunkCreator(userID))
 
     }, [dispatch, unFollowAC]);
 
     const followHandler = useCallback((userID: string) => {
-        dispatch(followButtonTrueDisabledAC(userID)) //устанавливаем на кнопку disabled
-        followApi(userID).then(data => {// пост запрос
-            if(data.resultCode===0){
-                dispatch(followAC(userID))
-            }
-            dispatch(followButtonFalseDisabledAC(userID)) //убираем disabled c кнопки по id
-        })
+        dispatch(followHandlerThunkCreator(userID))
     }, [dispatch, followAC]);
 
     let pagesCount = Math.ceil(userTotalCount / pageSize); //считаем количество страниц .делим всех юзеров на колич.юзеров на своей странице
