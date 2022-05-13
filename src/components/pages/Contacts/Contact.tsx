@@ -2,22 +2,14 @@ import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {
-    actualPageAC, changeFetchingAC,
     ContactsType,
     followAC, followHandlerThunkCreator, getUsersThunkCreator, onPageChangeThunkCreator,
-    setUsersAC,
-    unFollowAC, unfollowHandlerThunkCreator,
-    userTotalCountAC
+    unFollowAC, unfollowHandlerThunkCreator
 } from "../../../reducer/contactReducer";
 import s from './Contact.module.css'
 import userPfoto from './../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
 import {NavLink} from "react-router-dom";
-import {followApi, getApiUsers, onPageChange, unfollowApi} from "../../../api/api";
-import {
-    followButtonFalseDisabledAC,
-    followButtonTrueDisabledAC
-} from "../../../reducer/authReducer";
 
 export const Contact = React.memo(() => {
     const contacts = useSelector<AppRootStateType, Array<ContactsType>>(state => state.contactsPage.contacts);
