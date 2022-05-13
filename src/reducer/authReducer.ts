@@ -1,4 +1,6 @@
 import {changeFetchingAC} from "./contactReducer";
+import {Dispatch} from "redux";
+import {headerMeAuthApi} from "../api/api";
 
 
 let initialState = {
@@ -18,17 +20,20 @@ type AuthType = {
     email: string | null,
     isFetching: boolean,
     isAuth: boolean,
-    followButtonAction:string[],
+    followButtonAction: string[],
 }
 
 
-
-type ActionType = setUserDataACType | changeFetchingACType|followButtonFalseDisabledACType | followButtonTrueDisabledACType;
+type ActionType =
+    setUserDataACType
+    | changeFetchingACType
+    | followButtonFalseDisabledACType
+    | followButtonTrueDisabledACType;
 
 type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType = ReturnType<typeof changeFetchingAC>
-type followButtonTrueDisabledACType=ReturnType<typeof followButtonTrueDisabledAC>
-type followButtonFalseDisabledACType=ReturnType<typeof followButtonFalseDisabledAC>
+type followButtonTrueDisabledACType = ReturnType<typeof followButtonTrueDisabledAC>
+type followButtonFalseDisabledACType = ReturnType<typeof followButtonFalseDisabledAC>
 
 
 export const authReducer = (state: AuthType = initialState, action: ActionType): AuthType => {
@@ -62,16 +67,28 @@ export const setUserDataAC = (id: number,
         },
     } as const
 }
-export const followButtonTrueDisabledAC = (userID:string) => {
+export const followButtonTrueDisabledAC = (userID: string) => {
     return {
         type: 'FOLLOW-BUTTON-ACTION-PENDING',
         userID
     } as const
 }
 
-export const followButtonFalseDisabledAC = (userID:string) => {
+export const followButtonFalseDisabledAC = (userID: string) => {
     return {
         type: 'FOLLOW-BUTTON-ACTION-FALSE',
         userID
     } as const
+}
+
+export const headerAuthMeThunkCreator=() => (dispatch: Dispatch) => {
+    dispatch(changeFetchingAC(true));
+    headerMeAuthApi()
+        .then(data => {
+            dispatch(changeFetchingAC(false));
+            if (data.resultCode === 0) {
+                let {id, login, email} = data.data //деструктуризация
+                dispatch(setUserDataAC(id, login, email))
+            }
+        })
 }

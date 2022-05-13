@@ -4,9 +4,7 @@ import picture from './../../images/logo.png'
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
-import axios from "axios";
-import {changeFetchingAC, setUsersAC, userTotalCountAC} from "../../reducer/contactReducer";
-import {setUserDataAC} from "../../reducer/authReducer";
+import {headerAuthMeThunkCreator} from "../../reducer/authReducer";
 
 
 export const Header = () => {
@@ -15,22 +13,12 @@ export const Header = () => {
     const dispatch=useDispatch();
 
     useEffect(() => {
-        changeFetching(true);//true-когда пошел запорос срабатывает крутилка
-        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`,{withCredentials:true}).then(response => {
-
-            changeFetching(false);//запрос пришел-крутилка отключилась
-           // debugger //дебагером можем увидеть то что приходит в response .данные в data.
-          if(response.data.resultCode===0){
-              let{id,login,email}=response.data.data //деструктуризация
-              dispatch(setUserDataAC(id,login,email))
-          }
-
-        });
-        // }
+      dispatch(headerAuthMeThunkCreator())
     }, []);
-    const changeFetching = (value: boolean) => {
-        dispatch(changeFetchingAC(value)); //крутилка
-    }
+
+    // const changeFetching = (value: boolean) => {
+    //     dispatch(changeFetchingAC(value)); //крутилка
+    // }
     return (
         <header className={s.header}>
             <div className={s.logoWrapper}>
