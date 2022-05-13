@@ -1,9 +1,12 @@
 
 import {v1} from "uuid";
 import {PostType} from "../components/pages/Profile/Profile";
+import {Dispatch} from "redux";
+import {profileApi} from "../api/api";
+import {changeFetchingAC, changeFetchingACType} from "./contactReducer";
 
 
-type ActionType= addPostACType|removePostACType| setProfileACType;
+type ActionType= addPostACType|removePostACType| setProfileACType | changeFetchingACType;
 type addPostACType=ReturnType<typeof addPostAC>;
 type removePostACType=ReturnType<typeof removePostAC>;
 type setProfileACType=ReturnType<typeof setProfileAC>
@@ -81,3 +84,12 @@ export const setProfileAC = (users:ProfileUserType) => {
     } as const
 }
 
+export const usersThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
+    dispatch(changeFetchingAC(true));//true-когда пошел запорос срабатывает крутилка
+    profileApi(userID)
+        .then(data=>{
+            dispatch(changeFetchingAC(false));
+            dispatch(setProfileAC(data)); //этот путь к обьекту с данными мы увидели через дебагер
+        });
+
+}

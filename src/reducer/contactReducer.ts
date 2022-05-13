@@ -8,7 +8,7 @@ type unFollowACType = ReturnType<typeof unFollowAC>;
 type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
 type userTotalCountACType=ReturnType<typeof userTotalCountAC>
-type changeFetchingACType=ReturnType<typeof changeFetchingAC>
+export type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 
 type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType | userTotalCountACType|changeFetchingACType;
 
