@@ -49,12 +49,12 @@ function App() {
             <Navbar friendsData={friendsData}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/' element={<Profile/>}/>
-                    <Route path='/profile' element={<Profile/>}>
-                        <Route path=':userId' element={<Profile/>}/>
+                    <Route path='/' element={<AuthRedirect><Profile/></AuthRedirect>}/>
+                    <Route path='/profile' element={<AuthRedirect><Profile/></AuthRedirect>}>
+                        <Route path=':userId' element={<AuthRedirect><Profile/></AuthRedirect>}/>
                     </Route>
                     <Route path='/dialogs/*'
-                           element={<Dialogs/>}/>
+                           element={<AuthRedirect><Dialogs/></AuthRedirect>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>

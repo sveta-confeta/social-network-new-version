@@ -7,6 +7,7 @@ import {ProfileUserType, } from "../../../../reducer/postReducer";
 
 import logo from './../../../../images/User-PNG-Icon.png'
 import {Preloader} from "../../../../Util/Preloader";
+import {ProfileStatus} from "./ProfileStatus";
 
 
 const ProfileInfo = () => {
@@ -27,6 +28,7 @@ const ProfileInfo = () => {
                          src={users.photos.small !== null ? users.photos.small : logo}/>
                     <div className={s.name}>{users.fullName}</div>
                 </div>
+                <ProfileStatus status={'i love  front'}/>
                 <div className={s.me}><span>About me:</span> {users.aboutMe}</div>
                 <div className={s.contacts}>Contacts:</div>
                 <ul className={s.contactsList}>
