@@ -13,6 +13,8 @@ import {ProfileStatus} from "./ProfileStatus";
 const ProfileInfo = () => {
     // let isFetching = useSelector<AppRootStateType, boolean>(state => state.contactsPage.isFetching);
     const users=useSelector<AppRootStateType,ProfileUserType | null>(state => state.profilePage.users);
+    const status=useSelector<AppRootStateType,string >(state => state.profilePage.status);
+
 
     if (!users) {
         return <Preloader/>  //если нет профайла то крутилка ПРОВЕРКА на NULL
@@ -28,7 +30,8 @@ const ProfileInfo = () => {
                          src={users.photos.small !== null ? users.photos.small : logo}/>
                     <div className={s.name}>{users.fullName}</div>
                 </div>
-                <ProfileStatus status={'i love  front'}/>
+                <ProfileStatus status={status}/>
+
                 <div className={s.me}><span>About me:</span> {users.aboutMe}</div>
                 <div className={s.contacts}>Contacts:</div>
                 <ul className={s.contactsList}>

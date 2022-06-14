@@ -26,6 +26,7 @@ export const Contact = React.memo(() => {
         dispatch(getUsersThunkCreator(actualPage, pageSize)); //get запрос юзеров
     }, []);
 
+
     const unfollowHandler = useCallback((userID: string) => {
         dispatch(unfollowHandlerThunkCreator(userID))
 

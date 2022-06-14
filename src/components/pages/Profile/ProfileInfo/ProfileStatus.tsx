@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
+import {updateStatusThunkCreator} from "../../../../reducer/postReducer";
+import {useDispatch} from "react-redux";
 
 type ProfileStatusType={
     status:string
@@ -6,19 +8,29 @@ type ProfileStatusType={
 
 
  export const ProfileStatus =(props:ProfileStatusType)=>{
-    const [editMode,setEditMode]=useState(false);
+    const dispatch=useDispatch();
+    const [editMode,setEditMode]=useState<boolean>(false);
+     const [value,setValue]=useState<string>(props.status);
+
+const inputHandler=(event:ChangeEvent<HTMLInputElement>)=>{
+    setValue(event.currentTarget.value)
+}
 
 
    const activeEditMode=()=>{
         setEditMode(true)}
 
      const deactiveEditMode=()=>{
-         setEditMode(false)}
+         dispatch(updateStatusThunkCreator(value))
+         setEditMode(false)
+
+     }
+
 
         return (
             <div>{ editMode
-                ?  <input  onBlur={deactiveEditMode} autoFocus value={props.status}/>
-                :  <span onDoubleClick={activeEditMode}>{props.status}</span>
+                ?  <input  onChange={inputHandler} onBlur={deactiveEditMode} autoFocus value={value}/>
+                :  <span onDoubleClick={activeEditMode}>{!props.status? 'add status': props.status}</span>
 
             }
             </div>

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance=axios.create({
     withCredentials: true,
-    headers: {'API-KEY': '06ccb261-83c8-42d1-935e-fdc7e7fd8b48'},
+    headers: {'API-KEY': '9e6a1942-29a9-484e-94d7-dbb58c983bad'},
     baseURL:`https://social-network.samuraijs.com/api/1.0/`   //базовый урл автоматически приклеивается к строке
 })
 
@@ -27,12 +27,30 @@ export const unfollowApi = (userID: string) => {
         .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
 }
 
-export const profileApi = (userID: string) => {
-    return instance.get(`profile/` + userID)
-        .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
-}
 
 export const headerMeAuthApi=()=>{
     return instance.get(`auth/me`)
         .then(response => response.data)
+}
+export const profileApi={
+    getProfileUsers(userID: string){
+        return instance.get(`profile/` + userID)
+            .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
+    },
+
+    getStatus(userID: string){
+        return instance.get<string>(`profile/status/` + userID)
+    },
+
+    updateStatus(status:string){
+        return instance.put<UpdateProfileType>(`profile/status`,{status:status})
+            .then(response => response.data)
+    }
+
+}
+
+type UpdateProfileType={
+    resultCode: number
+    messages: string[],
+    data: {}
 }
