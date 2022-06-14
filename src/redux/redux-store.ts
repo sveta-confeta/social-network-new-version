@@ -5,6 +5,7 @@ import {contactsReducer} from "../reducer/contactReducer";
 import {authReducer} from "../reducer/authReducer";
 import thunkMiddleware from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {appReducer} from "../reducer/appReducer";
 
 
 let rootReducer=combineReducers({//сюда поместим все редьюсеры
@@ -12,6 +13,7 @@ let rootReducer=combineReducers({//сюда поместим все редьюс
     dialogsPage:dialogReducer,
     contactsPage:contactsReducer,
     auth:authReducer,
+    app:appReducer,
 });
 
 // определить автоматически тип всего объекта состояния

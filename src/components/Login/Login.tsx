@@ -1,12 +1,12 @@
 import React from 'react';
 import {useFormik} from "formik";
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
-import {AuthLoginThunkCreator} from "../../redux/authReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {DataLoginType} from "../../api/api";
 import {AppRootStateType} from "../../redux/redux-store";
 import {Navigate} from "react-router-dom";
 import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
+import {AuthLoginThunkCreator} from "../../reducer/authReducer";
 //здесь страница логина
 
 type FormikErrorType = {
@@ -48,7 +48,7 @@ export const Login = () => {
             },
 
         })
-         if (isAuth){ //если тру-то сделай редирект на страницу с тодолистами
+         if (isAuth){ //если тру-то сделай редирект на страницу с профайлом
            return <Navigate to ={'/profile/userID'}/>
          }
 

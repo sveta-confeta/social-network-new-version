@@ -68,3 +68,20 @@ type UpdateProfileType={
     messages: string[],
     data: {}
 }
+
+export type DataLoginType={
+    email:string,
+    password:string,
+    rememberMe:boolean,
+
+}
+export type PutStatus={
+    resultCode: number,
+    messages: string[],
+    data:{},
+}
+export type PostStatus={
+    resultCode: number,
+    messages: string[],
+    data:{userId:number},
+}

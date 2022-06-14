@@ -1,6 +1,7 @@
 import {changeFetchingAC} from "./contactReducer";
 import {Dispatch} from "redux";
-import {headerMeAuthApi, loginApi} from "../api/api";
+import {DataLoginType, loginApi} from "../api/api";
+import {errorApiAC, initializedAC} from "./appReducer";
 
 
 let initialState = {
@@ -28,18 +29,23 @@ type ActionType =
     setUserDataACType
     | changeFetchingACType
     | followButtonFalseDisabledACType
-    | followButtonTrueDisabledACType;
+    | followButtonTrueDisabledACType
+|  postAuthLoginACType;
 
 type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType = ReturnType<typeof changeFetchingAC>
 type followButtonTrueDisabledACType = ReturnType<typeof followButtonTrueDisabledAC>
 type followButtonFalseDisabledACType = ReturnType<typeof followButtonFalseDisabledAC>
+type postAuthLoginACType=ReturnType<typeof postAuthLoginAC>
 
 
 export const authReducer = (state: AuthType = initialState, action: ActionType): AuthType => {
     switch (action.type) {
         case 'SET-USER-DATA': {
             return {...state, ...action.data, isAuth: true}
+        }
+        case 'AUTH-LOGIN': {
+            return {...state, isAuth: true}
         }
         case 'CHANGE-FETCHING': {
             return {...state, isFetching: action.value}
@@ -80,6 +86,8 @@ export const followButtonFalseDisabledAC = (userID: string) => {
         userID
     } as const
 }
+export const postAuthLoginAC = (value:boolean) =>
+    ({type: 'AUTH-LOGIN', value} as const);
 
 //Thunk
 export const AuthThunkCreator=()=> async (dispatch:Dispatch)=>{ //GET запрс за auth/me

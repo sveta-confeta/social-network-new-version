@@ -1,8 +1,3 @@
-import {Dispatch} from "redux";
-import {headerAuthThunkCreator} from "./authReducer";
-
-
-
 
 
 export type AuthType = {

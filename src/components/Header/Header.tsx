@@ -4,7 +4,8 @@ import picture from './../../images/logo.png'
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
-import {headerAuthMeThunkCreator} from "../../reducer/authReducer";
+import {AuthThunkCreator, LoginOutThunkCreator} from "../../reducer/authReducer";
+
 
 
 export const Header = () => {
@@ -13,12 +14,15 @@ export const Header = () => {
     const dispatch=useDispatch();
 
     useEffect(() => {
-      dispatch(headerAuthMeThunkCreator())
+      dispatch(AuthThunkCreator()) //это гет запрос за моими данными
     }, []);
-
+    const logautHandler=()=>{
+        dispatch(LoginOutThunkCreator())
+    }
     // const changeFetching = (value: boolean) => {
     //     dispatch(changeFetchingAC(value)); //крутилка
     // }
+
     return (
         <header className={s.header}>
             <div className={s.logoWrapper}>
@@ -26,7 +30,7 @@ export const Header = () => {
                 <span className={s.text}> MOTO-FRIENDS </span>
             </div>
             <div className={s.loginWrapper}>
-                {isAuth ? <div className={s.loginName}> {login}</div>
+                {isAuth ? <div className={s.loginName}> {login} <button onClick={logautHandler}> Logaut</button></div>
                     : <NavLink  className={s.login} to={'/login'}>Login</NavLink> }
             </div>
         </header>
