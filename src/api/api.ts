@@ -28,10 +28,24 @@ export const unfollowApi = (userID: string) => {
 }
 
 
-export const headerMeAuthApi=()=>{
-    return instance.get(`auth/me`)
-        .then(response => response.data)
+export const loginApi={
+    meAuthApi(){
+        return instance.get(`auth/me`)
+            .then(response => response.data)
+    },
+    postLogin(data:DataLoginType){   //положить на сайт мои данные ,создать мои данные.POST запро
+        return instance.post<PostStatus>(`auth/login`, data)
+    },
+
+    deleteLogin(){
+        return instance.delete<PostStatus>(`auth/login`)
+
+    }
 }
+
+
+
+
 export const profileApi={
     getProfileUsers(userID: string){
         return instance.get(`profile/` + userID)

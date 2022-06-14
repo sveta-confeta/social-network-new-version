@@ -1,6 +1,6 @@
 import {changeFetchingAC} from "./contactReducer";
 import {Dispatch} from "redux";
-import {headerMeAuthApi} from "../api/api";
+import {headerMeAuthApi, loginApi} from "../api/api";
 
 
 let initialState = {
@@ -81,14 +81,68 @@ export const followButtonFalseDisabledAC = (userID: string) => {
     } as const
 }
 
-export const headerAuthMeThunkCreator=() => (dispatch: Dispatch) => {
-    dispatch(changeFetchingAC(true));
-    headerMeAuthApi()
-        .then(data => {
-            dispatch(changeFetchingAC(false));
-            if (data.resultCode === 0) {
-                let {id, login, email} = data.data //деструктуризация
-                dispatch(setUserDataAC(id, login, email))
+//Thunk
+export const AuthThunkCreator=()=> async (dispatch:Dispatch)=>{ //GET запрс за auth/me
+    try{
+       const response = await loginApi.meAuthApi();
+        if (response.resultCode===0){
+            let {id,email,login} = response.data //деструктуризация
+            dispatch(setUserDataAC(id,email,login));
+        } else{
+            debugger
+            dispatch(changeFetchingAC(false))
+            dispatch(errorApiAC(response.messages[0]))
+        }
+    }catch (e:any) {
+        console.log(e.message)
+    }finally {
+        dispatch(initializedAC(true));
+    }
+
+    // headerApiAuth()
+    //     .then(data=>{
+    //         debugger
+    //         if (data.resultCode===0){
+    //             let {id,email,login} = data.data //деструктуризация
+    //             dispatch(setUserDataAC(id,email,login));
+    //         } else{
+    //             debugger
+    //             dispatch(changeFetchingAC(false))
+    //             dispatch(errorApiAC(data.messages[0]))
+    //         }
+    //     }).finally(() =>{
+    //     dispatch(initializedAC(true));
+    // })
+}
+
+export const  AuthLoginThunkCreator=(data:DataLoginType)=>(dispatch:Dispatch)=>{ //Post запрос логина
+    dispatch(changeFetchingAC(true))
+    loginApi.postLogin(data)
+        .then((res) =>{
+            if (res.data.resultCode===0){
+                dispatch(changeFetchingAC(false))
+                dispatch(postAuthLoginAC(true))
+
+            } else{
+                dispatch(changeFetchingAC(false))
+                dispatch(errorApiAC(res.data.messages[0]))
+
             }
+        })
+};
+export const LoginOutThunkCreator=()=>(dispatch:Dispatch)=>{
+    dispatch(changeFetchingAC(true))
+    loginApi.deleteLogin()
+        .then((res) =>{
+            if (res.data.resultCode===0){
+                dispatch(changeFetchingAC(false))
+                dispatch(postAuthLoginAC(false))
+
+            } else{
+                dispatch(changeFetchingAC(false))
+                dispatch(errorApiAC(res.data.messages[0]))
+
+            }
+
         })
 }
