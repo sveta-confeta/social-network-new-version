@@ -1,21 +1,19 @@
-import React, {useEffect} from "react";
+import React from "react";
 import s from './Header.module.css';
 import picture from './../../images/logo.png'
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
-import {AuthThunkCreator, LoginOutThunkCreator} from "../../reducer/authReducer";
+import { LoginOutThunkCreator} from "../../reducer/authReducer";
 
 
 
 export const Header = () => {
-    const login=useSelector<AppRootStateType,string|null>(state => state.auth.login) //достаем имя которое будет на сайте в хэдере
+    const login=useSelector<AppRootStateType,string|null>(state => state.auth.email) //достаем имя которое будет на сайте в хэдере
     const isAuth=useSelector<AppRootStateType,boolean>(state => state.auth.isAuth)
     const dispatch=useDispatch();
 
-    useEffect(() => {
-      dispatch(AuthThunkCreator()) //это гет запрос за моими данными
-    }, []);
+
     const logautHandler=()=>{
         dispatch(LoginOutThunkCreator())
     }

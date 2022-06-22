@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Header} from "./components/Header/Header";
 import {Navbar} from "./components/Navbar/Navbar";
@@ -12,6 +12,10 @@ import {v1} from "uuid";
 import {Contact} from "./components/pages/Contacts/Contact";
 import {Login} from "./components/Login/Login";
 import {AuthRedirect} from "./Util/AuthRedirect";
+import {AuthThunkCreator} from "./reducer/authReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./redux/redux-store";
+import {Preloader} from "./Util/Preloader";
 
 export type FriendItemType = {
     id: string
@@ -22,6 +26,11 @@ export type FriendItemType = {
 
 
 function App() {
+    const dispatch=useDispatch();
+    const initialized=useSelector<AppRootStateType,boolean>(state => state.app.initialized)
+    useEffect(() => {
+        dispatch(AuthThunkCreator()) //это гет запрос за моими данными
+    }, []);
 
     let friendsData: Array<FriendItemType> = [
         {
@@ -42,8 +51,11 @@ function App() {
         },
 
     ]
-
+    if (!initialized){
+        <Preloader/>
+    }
     return (
+
         <div className="app-wrapper">
             <Header/>
             <Navbar friendsData={friendsData}/>

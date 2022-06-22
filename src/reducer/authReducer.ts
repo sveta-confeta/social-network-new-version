@@ -45,7 +45,7 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
             return {...state, ...action.data, isAuth: true}
         }
         case 'AUTH-LOGIN': {
-            return {...state, isAuth: true}
+            return {...state, isAuth: action.value}
         }
         case 'CHANGE-FETCHING': {
             return {...state, isFetching: action.value}
